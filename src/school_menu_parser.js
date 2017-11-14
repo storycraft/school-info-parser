@@ -14,8 +14,6 @@ const BREAKFAST = 'breakfast';
 const LUNCH = 'lunch';
 const DINNER = 'dinner';
 
-//stu.cne.go.kr/sts_sci_md00_001.do?schulCode=N100000589&schulCrseScCode=3&schulKndScCode=03&schYm=201710
-//2017년 10월 메뉴 받아오기
 const CACHE_INTERVAL = 86400000;//하루마다 월 메뉴 재 캐싱
 
 class SchoolMenuParser {

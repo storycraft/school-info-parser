@@ -17,9 +17,6 @@ const END_MONTH = 2;
 const SUMMER_VACTION = '여름방학';
 const WINTER_VACTION = '겨울방학';
 
-//온양중학교 10월 일정
-//http://stu.cne.go.kr/sts_sci_sf00_001.do?schulCode=N100000589&schulCrseScCode=3&schulKndScCode=03&ay=2017&sem=2
-
 class SchoolScheduleParser {
   constructor(schoolLocation,schoolCode,schoolType){
     this.cache = {};

@@ -1,11 +1,9 @@
 module.exports = {
     entry: './src/module.js',
     output: {
-        library: "school-info-parser",
-        libraryTarget: "umd",
-        path: __dirname + '/dist/',
-        filename: 'school-info-parser.js',
-    },
+        filename: 'dist/school-info-parser.js'
+     },
+    target: 'node',
     module: {
         rules: [
             {
