@@ -1,0 +1,30 @@
+{
+  "name": "school-info-parser",
+  "version": "1.0.0",
+  "description": "NEIS (korea) school information parser",
+  "main": "school_menu_parser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "school-info-parser"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "cheerio": "^1.0.0-rc.2",
+    "webpack": "^3.8.1"
+  },
+  "keywords": [
+    "school",
+    "lunchinfo",
+    "schedule",
+    "nise",
+    "parser"
+  ],
+  "author": "storycraft",
+  "license": "MIT"
+}
