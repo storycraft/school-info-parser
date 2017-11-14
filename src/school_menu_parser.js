@@ -42,7 +42,7 @@ class SchoolMenuParser {
     let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
     if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)
-      this.cache[date.getFullYear()] = await parseMenuData(date,this.schoolLocation,this.schoolCode,this.schoolType);
+      schoolDB[month] = await parseMenuData(date,this.schoolLocation,this.schoolCode,this.schoolType);
 
     return schoolDB[month].schedules;
   }
@@ -85,7 +85,7 @@ function getRawDatabase(date,schoolLocation,schoolCode,schoolType){
 
 //html 데이터 변경시 수정 필요
 async function parseMenuData(date){
-  var month = date.getMonth();
+
   //월 식단 리셋
 
   var monthDB = {};
