@@ -1,5 +1,5 @@
 module.exports = {
-    entry: './src/module.js',
+    entry: ['babel-polyfill', './src/module.js',
     output: {
         filename: 'dist/school-info-parser.js'
      },
