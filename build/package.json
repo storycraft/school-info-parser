@@ -11,8 +11,7 @@
     "url": "https://github.com/storycraft/school-info-parser"
   },
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2",
-    "babel-polyfill": "^6.26.0"
+    "cheerio": "^1.0.0-rc.2"
   },
   "keywords": [
     "school",
