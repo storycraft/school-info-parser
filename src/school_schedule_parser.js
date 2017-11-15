@@ -1,13 +1,13 @@
 /*
   주의 : 이 문서를 보고 생기는 암은 책임지지 않습니다.
 */
-import http from 'http';
+import request from './http_request.js';
 import cheerio from 'cheerio';
 
 const GLOBAL_URL = 'stu.sen.go.kr';/* 서울특별시 나이스*/
 const SCHEDULE_MONTH_URL = 'sts_sci_sf01_001.do';
 
-const KNDCODE = '03';//???
+const KNDCODE = '03';//?????
 
 const CACHE_INTERVAL = 86400000;//하루마다 월 일정 재 캐싱
 
@@ -45,52 +45,36 @@ class SchoolScheduleParser {
   }
 }
 
-export default (schoolCode,schoolType) => new SchoolScheduleParser(schoolCode,schoolType);
+export default (schoolLocation,schoolCode,schoolType) => new SchoolScheduleParser(schoolLocation,schoolCode,schoolType);
 
 /*
  *
  * HTML 파싱 부분
  *
  */
-function getRawDatabase(date,schoolLocation,schoolCode,schoolType){
-  return new Promise((resolve,reject) => {
-    let req = http.request({
-      'host': GLOBAL_URL,
-      'port': 80,
-      'path': `/${SCHEDULE_MONTH_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulCrseScCode=${schoolType}&schulKndScCode=${KNDCODE}&ay=${date.getFullYear()}&mm=${date.getMonth() + 1}`,
-      'method': 'GET'
-    },(res) => {
-      var raw = '';
-      res.on('data',(chunk) => raw += chunk);
-      res.on('end',() => resolve(raw));
-      res.on('error',(e) => reject(e));
-    });
 
-    req.end();
-  });
+async function getRawDatabase(date,schoolLocation,schoolCode,schoolType){
+  return await request(GLOBAL_URL,'GET',`/${SCHEDULE_MONTH_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulKndScCode=${KNDCODE}&schulCrseScCode=${schoolType}&ay=${date.getFullYear()}&mm=${date.getMonth() + 1}`);
 }
 
 //html 데이터 변경시 수정 필요
-async function parseScheduleData(date){
-  var month = date.getMonth() + 1;//세는 달로 표시
+async function parseScheduleData(date,schoolLocation,schoolCode,schoolType){
   var monthDB = {};
   monthDB.lastCache = new Date().getTime();//마지막 캐싱 일자 기록
 
-  var scheduleObject = (schoolDB.schedules = {});
+  var scheduleObject = (monthDB.schedules = {});
 
-  let raw = await getRawDatabase(date);
+  let raw = await getRawDatabase(date,schoolLocation,schoolCode,schoolType);
   let $ = cheerio.load(raw);
 
   var contents = $('#contents .sub_con table tbody tr td div');//내부 div 목록
   var firstDay = new Date(date.setDate(1)).getDay();//첫날 인덱스 구하기
-
   let length = new Date(date.setDate(0)).getDate();//달 길이 구하기
   for (let i = 0;i < length;i++){
     var content = contents.get(i + firstDay);
     if (content)
       scheduleObject[i + 1] = parseTable(scheduleObject,content);//세는 일로 표시
   }
-
   return monthDB;
 }
 

@@ -2,24 +2,29 @@
   "name": "school-info-parser",
   "version": "1.0.0",
   "description": "NEIS (korea) school information parser",
-  "main": "module.js",
+  "main": "src/school_info_parser.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack"
+    "start": "babel src -d build -w"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/storycraft/school-info-parser"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0"
+    "cheerio": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "cheerio": "^1.0.0-rc.2",
     "webpack": "^3.8.1"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   },
   "keywords": [
     "school",

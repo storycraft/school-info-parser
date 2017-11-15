@@ -1,0 +1,21 @@
+{
+  "name": "school-info-parser",
+  "version": "1.0.0",
+  "description": "NEIS (korea) school information parser",
+  "main": "school_info_parser.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2"
+  },
+  "keywords": [
+    "school",
+    "lunchinfo",
+    "schedule",
+    "nise",
+    "parser"
+  ],
+  "author": "storycraft",
+  "license": "MIT"
+}
