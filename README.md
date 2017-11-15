@@ -1,4 +1,5 @@
 [![NPM](https://nodei.co/npm/school-info-parser.png)](https://www.npmjs.com/package/school-info-parser)
+
 학교 일정 & 급식 정보 파서
 ======================
 
