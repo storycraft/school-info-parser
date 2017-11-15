@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var LOCATIONS = {
+const LOCATIONS = {
   //광역시
   '서울특별시': 'B10',
   '부산광역시': 'C10',

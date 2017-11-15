@@ -15,28 +15,22 @@ var _url2 = _interopRequireDefault(_url);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function getData(host, method, path) {
-  return new Promise(function (resolve, reject) {
-    var req = _http2.default.request({
+  return new Promise((resolve, reject) => {
+    let req = _http2.default.request({
       'host': host,
       'port': 80,
       'path': path,
       'method': method
-    }, function (res) {
+    }, res => {
       if (res.statusCode == 302) {
         //자동 리다이랙트
-        var url = _url2.default.parse(res.headers.location);
+        let url = _url2.default.parse(res.headers.location);
         getData(url.hostname, method, url.path).then(resolve).catch(reject);
       } else {
         var raw = '';
-        res.on('data', function (chunk) {
-          return raw += chunk;
-        });
-        res.on('end', function () {
-          return resolve(raw);
-        });
-        res.on('error', function (e) {
-          return reject(e);
-        });
+        res.on('data', chunk => raw += chunk);
+        res.on('end', () => resolve(raw));
+        res.on('error', e => reject(e));
       }
     });
     req.end();

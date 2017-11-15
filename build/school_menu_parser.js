@@ -4,109 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       주의 : 이 문서를 보고 생기는 암은 책임지지 않습니다.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     */
-
-
-/*
- *
- * HTML 파싱 부분
- *
- */
-var getRawDatabase = function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(date, schoolLocation, schoolCode, schoolType) {
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.next = 2;
-            return (0, _http_request2.default)(GLOBAL_URL, 'GET', '/' + MONTHLY_MENU_URL + '?domainCode=' + schoolLocation + '&contEducation=' + schoolLocation + '&schulCode=' + schoolCode + '&schulCrseScCode=' + schoolType + '&schYm=' + date.getFullYear() + (date.getMonth() + 1));
-
-          case 2:
-            return _context4.abrupt('return', _context4.sent);
-
-          case 3:
-          case 'end':
-            return _context4.stop();
-        }
-      }
-    }, _callee4, this);
-  }));
-
-  return function getRawDatabase(_x7, _x8, _x9, _x10) {
-    return _ref4.apply(this, arguments);
-  };
-}();
-
-//html 데이터 변경시 수정 필요
-
-
-var parseMenuData = function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(date, schoolLocation, schoolCode, schoolType) {
-    var monthDB, lunchInfo, raw, $, content, lunchTable, child, i, divs, object, allergyBox, children, allergyInfo;
-    return regeneratorRuntime.wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            //월 식단 리셋
-            monthDB = {};
-            lunchInfo = monthDB.info = {};
-
-
-            monthDB.lastCache = new Date().getTime(); //마지막 캐싱 일자 기록
-
-            _context5.next = 5;
-            return getRawDatabase(date, schoolLocation, schoolCode, schoolType);
-
-          case 5:
-            raw = _context5.sent;
-            $ = _cheerio2.default.load(raw);
-            content = $('div .sub_con').eq(0); //맨 처음 div
-
-            lunchTable = content.find('td');
-            child = lunchTable.children();
-
-            for (i = 0; i < child.length; i++) {
-              divs = child[i].children;
-
-              if (divs.length > 1) {
-                //미 완성 급식 데이터 처리
-                object = parseToObject(divs);
-
-                lunchInfo[object.day] = object;
-              }
-            }
-
-            //알레르기 수집파트 시작
-            allergyBox = content.children('div')[0]; //알러지 정보는 달력 뒤 div 박스
-
-            children = allergyBox.children;
-            allergyInfo = '';
-
-            for (i = 0; i < children.length; i++) {
-              if (children[i] && children[i].type == 'text' && children[i].data) allergyInfo += '\n' + children[i].data; //자동 줄 바꿈
-            }
-            monthDB.allergyInfo = allergyInfo; //알러지 정보 저장
-
-            return _context5.abrupt('return', monthDB);
-
-          case 17:
-          case 'end':
-            return _context5.stop();
-        }
-      }
-    }, _callee5, this);
-  }));
-
-  return function parseMenuData(_x11, _x12, _x13, _x14) {
-    return _ref5.apply(this, arguments);
-  };
-}();
-
-//html 데이터 변경시 수정 필요
-
-
 var _http_request = require('./http_request.js');
 
 var _http_request2 = _interopRequireDefault(_http_request);
@@ -117,24 +14,21 @@ var _cheerio2 = _interopRequireDefault(_cheerio);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var GLOBAL_URL = 'stu.sen.go.kr'; /* 서울특별시 나이스 */
-var MONTHLY_MENU_URL = 'sts_sci_md00_001.do';
+/*
+  주의 : 이 문서를 보고 생기는 암은 책임지지 않습니다.
+*/
+const GLOBAL_URL = 'stu.sen.go.kr'; /* 서울특별시 나이스 */
+const MONTHLY_MENU_URL = 'sts_sci_md00_001.do';
 
 //시간별 코드
-var BREAKFAST = 'breakfast';
-var LUNCH = 'lunch';
-var DINNER = 'dinner';
+const BREAKFAST = 'breakfast';
+const LUNCH = 'lunch';
+const DINNER = 'dinner';
 
-var CACHE_INTERVAL = 86400000; //하루마다 월 메뉴 재 캐싱
+const CACHE_INTERVAL = 86400000; //하루마다 월 메뉴 재 캐싱
 
-var SchoolMenuParser = function () {
-  function SchoolMenuParser(schoolLocation, schoolCode, schoolType) {
-    _classCallCheck(this, SchoolMenuParser);
-
+class SchoolMenuParser {
+  constructor(schoolLocation, schoolCode, schoolType) {
     this.cache = {};
 
     this.schoolLocation = schoolLocation;
@@ -142,132 +36,86 @@ var SchoolMenuParser = function () {
     this.schoolType = schoolType;
   }
 
-  _createClass(SchoolMenuParser, [{
-    key: 'getDailyMenu',
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(date, recache) {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return this.getMonthlyMenu(date, recache)[date.getDate() + 1];
+  get SchoolCode() {
+    return this.schoolCode;
+  }
 
-              case 2:
-                return _context.abrupt('return', _context.sent);
+  get SchoolType() {
+    return this.schoolType;
+  }
 
-              case 3:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
+  async getDailyMenu(date, recache) {
+    return await this.getMonthlyMenu(date, recache)[date.getDate() + 1];
+  }
 
-      function getDailyMenu(_x, _x2) {
-        return _ref.apply(this, arguments);
-      }
+  async getMonthlyMenu(date, recache) {
+    let month = date.getMonth() + 1; //현실상 세는 달로 수정
+    let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
-      return getDailyMenu;
-    }()
-  }, {
-    key: 'getMonthlyMenu',
-    value: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(date, recache) {
-        var month, schoolDB;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                month = date.getMonth() + 1; //현실상 세는 달로 수정
+    if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL) schoolDB[month] = await parseMenuData(date, this.schoolLocation, this.schoolCode, this.schoolType);
 
-                schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
+    return schoolDB[month].info;
+  }
 
-                if (!(recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)) {
-                  _context2.next = 6;
-                  break;
-                }
+  async getAllergyInfo(date, recache) {
+    let month = date.getMonth() + 1; //현실상 세는 달로 수정
+    let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
-                _context2.next = 5;
-                return parseMenuData(date, this.schoolLocation, this.schoolCode, this.schoolType);
+    if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL) await this.getMonthlyMenu(date, recache); //재캐싱
 
-              case 5:
-                schoolDB[month] = _context2.sent;
+    return schoolDB[month].allergyInfo;
+  }
+}
 
-              case 6:
-                return _context2.abrupt('return', schoolDB[month].info);
+exports.default = (schoolLocation, schoolCode, schoolType) => new SchoolMenuParser(schoolLocation, schoolCode, schoolType);
 
-              case 7:
-              case 'end':
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
+/*
+ *
+ * HTML 파싱 부분
+ *
+ */
 
-      function getMonthlyMenu(_x3, _x4) {
-        return _ref2.apply(this, arguments);
-      }
 
-      return getMonthlyMenu;
-    }()
-  }, {
-    key: 'getAllergyInfo',
-    value: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(date, recache) {
-        var month, schoolDB;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
-          while (1) {
-            switch (_context3.prev = _context3.next) {
-              case 0:
-                month = date.getMonth() + 1; //현실상 세는 달로 수정
+async function getRawDatabase(date, schoolLocation, schoolCode, schoolType) {
+  return await (0, _http_request2.default)(GLOBAL_URL, 'GET', `/${MONTHLY_MENU_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulCrseScCode=${schoolType}&schYm=${date.getFullYear()}${date.getMonth() + 1}`);
+}
 
-                schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
+//html 데이터 변경시 수정 필요
+async function parseMenuData(date, schoolLocation, schoolCode, schoolType) {
+  //월 식단 리셋
+  var monthDB = {};
+  var lunchInfo = monthDB.info = {};
 
-                if (!(recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)) {
-                  _context3.next = 5;
-                  break;
-                }
+  monthDB.lastCache = new Date().getTime(); //마지막 캐싱 일자 기록
 
-                _context3.next = 5;
-                return this.getMonthlyMenu(date, recache);
+  let raw = await getRawDatabase(date, schoolLocation, schoolCode, schoolType);
+  let $ = _cheerio2.default.load(raw);
 
-              case 5:
-                return _context3.abrupt('return', schoolDB[month].allergyInfo);
-
-              case 6:
-              case 'end':
-                return _context3.stop();
-            }
-          }
-        }, _callee3, this);
-      }));
-
-      function getAllergyInfo(_x5, _x6) {
-        return _ref3.apply(this, arguments);
-      }
-
-      return getAllergyInfo;
-    }()
-  }, {
-    key: 'SchoolCode',
-    get: function get() {
-      return this.schoolCode;
+  let content = $('div .sub_con').eq(0); //맨 처음 div
+  let lunchTable = content.find('td');
+  var child = lunchTable.children();
+  for (var i = 0; i < child.length; i++) {
+    var divs = child[i].children;
+    if (divs.length > 1) {
+      //미 완성 급식 데이터 처리
+      var object = parseToObject(divs);
+      lunchInfo[object.day] = object;
     }
-  }, {
-    key: 'SchoolType',
-    get: function get() {
-      return this.schoolType;
-    }
-  }]);
+  }
 
-  return SchoolMenuParser;
-}();
+  //알레르기 수집파트 시작
+  let allergyBox = content.children('div')[0]; //알러지 정보는 달력 뒤 div 박스
+  var children = allergyBox.children;
+  var allergyInfo = '';
+  for (var i = 0; i < children.length; i++) {
+    if (children[i] && children[i].type == 'text' && children[i].data) allergyInfo += '\n' + children[i].data; //자동 줄 바꿈
+  }
+  monthDB.allergyInfo = allergyInfo; //알러지 정보 저장
 
-exports.default = function (schoolLocation, schoolCode, schoolType) {
-  return new SchoolMenuParser(schoolLocation, schoolCode, schoolType);
-};
+  return monthDB;
+}
 
+//html 데이터 변경시 수정 필요
 function parseToObject(divs) {
   var object = {};
   var working = null;
