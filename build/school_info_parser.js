@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SchoolLocation = exports.SchoolType = exports.SchoolScheduleParser = exports.SchoolMenuParser = undefined;
 
-var _babelPolyfill = require('babel-polyfill');
-
-var _babelPolyfill2 = _interopRequireDefault(_babelPolyfill);
-
 var _school_menu_parser = require('./school_menu_parser.js');
 
 var _school_menu_parser2 = _interopRequireDefault(_school_menu_parser);
@@ -30,4 +26,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.SchoolMenuParser = _school_menu_parser2.default;
 exports.SchoolScheduleParser = _school_schedule_parser2.default;
 exports.SchoolType = _school_type2.default;
-exports.SchoolLocation = _school_location2.default; //async await support
+exports.SchoolLocation = _school_location2.default;
