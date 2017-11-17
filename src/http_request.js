@@ -17,9 +17,9 @@ function getData(host,method,path){
          var raw = '';
          res.on('data',(chunk) => raw += chunk);
          res.on('end',() => resolve(raw));
-         res.on('error',(e) => reject(e));
        }
      });
+     req.on('error',reject);
      req.end();
    });
 }

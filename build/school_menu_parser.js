@@ -45,7 +45,8 @@ class SchoolMenuParser {
   }
 
   async getDailyMenu(date, recache) {
-    return await this.getMonthlyMenu(date, recache)[date.getDate() + 1];
+    let menus = await this.getMonthlyMenu(date, recache);
+    return menus[date.getDate()];
   }
 
   async getMonthlyMenu(date, recache) {
@@ -90,7 +91,6 @@ async function parseMenuData(date, schoolLocation, schoolCode, schoolType) {
 
   let raw = await getRawDatabase(date, schoolLocation, schoolCode, schoolType);
   let $ = _cheerio2.default.load(raw);
-
   let content = $('div .sub_con').eq(0); //맨 처음 div
   let lunchTable = content.find('td');
   var child = lunchTable.children();
