@@ -1,6 +1,6 @@
 {
   "name": "school-info-parser",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "대한민국 내 학교 급식 및 학사 일정 파싱 도구",
   "main": "school_info_parser.js",
   "scripts": {
