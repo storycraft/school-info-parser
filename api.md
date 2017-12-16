@@ -1,84 +1,84 @@
-#API
-##Enums
+# API
+## Enums
 
-###SchoolType
+### SchoolType
 numeric set by type
 
-###SchoolLocation
+### SchoolLocation
 string set by location
 
-##Classes
-###SchoolInfoParser
+## Classes
+### SchoolInfoParser
 
-####MenuParser
+#### MenuParser
 MenuParser Class
 
-####ScheduleParser
+#### ScheduleParser
 ScheduleParser Class
 
-####SchoolType
+#### SchoolType
 SchoolType enum set
 
-####SchoolLocation
+#### SchoolLocation
 SchoolLocation enum set
 
-###SchoolParser
+### SchoolParser
 SchoolParser is base class of MenuParser and ScheduleParser
 
-####get SchoolCode
+#### get SchoolCode
 return SchoolCode string  
 
-####get SchoolLocation
+#### get SchoolLocation
 return SchoolLocation string  
 
-####get SchoolType
+#### get SchoolType
 return SchoolType string  
 
 
-###MenuParser
+### MenuParser
 MenuParser extends SchoolParser
 
-####constructor(schoolLocation,schoolCode,schoolType)
+#### constructor(schoolLocation,schoolCode,schoolType)
 `schoolLocation` is SchoolLocation enum  
 `schoolCode` is Schoolcode string  
 `schoolType` is SchoolType enum  
 
-####async getDailyMenu(date,[recache])
+#### async getDailyMenu(date,[recache])
 `date` is Date Object  
 `recache` is boolean  
 **return DailyMenu Object of given date**  
 if recache is true parser will override cached data  
 
 
-####async getMonthlyMenu(date,[recache])
+#### async getMonthlyMenu(date,[recache])
 `date` is Date Object  
 `recache` is boolean  
 **return MonthlyMenu Object of given date**  
 if recache is true parser will override cached data  
 
-####async getAllergyInfo(date,[recache])
+#### async getAllergyInfo(date,[recache])
 `date` is Date Object  
 `recache` is boolean  
 **return allergyInfo String of given date**  
 if recache is true parser will override cached data  
 
 
-###ScheduleParser
+### ScheduleParser
 ScheduleParser extends SchoolParser
 
-####constructor(schoolLocation,schoolCode,schoolType)
+#### constructor(schoolLocation,schoolCode,schoolType)
 `schoolLocation` is SchoolLocation enum  
 `schoolCode` is Schoolcode string  
 `schoolType` is SchoolType enum  
 
-####async getMonthlySchedule(date,[recache])
+#### async getMonthlySchedule(date,[recache])
 `date` is Date Object  
 `recache` is boolean  
 **return MonthlySchedule Object of given date**  
 if recache is true parser will override cached data  
 
-##Objects
-###MonthlySchedule
+## Objects
+### MonthlySchedule
 #### schedules
 schedules list  
 ##### [date]
@@ -111,5 +111,5 @@ lunch menu string
 dinner menu string  
 
 
-#SchoolCode
+# SchoolCode
 [#use here](https://www.meatwatch.go.kr/biz/bm/sel/schoolListPopup.do) to search SchoolCode
