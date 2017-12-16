@@ -11,4 +11,4 @@ import ScheduleParser from './parser/ScheduleParser.js';
 import SchoolType from './SchoolType.js';
 import SchoolLocation from './SchoolLocation.js';
 
-export { SchoolParser, MenuParser, ScheduleParser, SchoolType, SchoolLocation };
+export { SchoolParser, MenuParser, ScheduleParser, SchoolType, SchoolLocation, /*deprecated*/ MenuParser as SchoolMenuParser,/*deprecated*/ ScheduleParser as SchoolScheduleParser };
