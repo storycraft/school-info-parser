@@ -1,7 +1,11 @@
-/*
-  주의 : 이 문서를 보고 생기는 암은 책임지지 않습니다.
-*/
-import request from './http_request.js';
+/**
+ * @module src/parser/MenuParser.js
+ * @file menu parser
+ * @author storycraft <storycraft@storyboard.ml>
+ */
+
+import httpRequest from '../request/HttpRequest.js';
+import SchoolParser from './SchoolParser.js';
 import cheerio from 'cheerio';
 
 const GLOBAL_URL = 'stu.sen.go.kr';/* 서울특별시 나이스 */
@@ -14,38 +18,59 @@ const DINNER = 'dinner';
 
 const CACHE_INTERVAL = 86400000;//하루마다 월 메뉴 재 캐싱
 
-class SchoolMenuParser {
+class MenuParser extends SchoolParser {
+
+  /**
+   * @constructor create a MenuParser
+   *
+   * @param  {String} schoolLocation schoolLocation Code
+   * @param  {String} schoolCode     schoolCode
+   * @param  {String} schoolType     schoolLocation Code
+   *
+   * @see {@link /src/SchoolParser.js} for more information
+   */
   constructor(schoolLocation,schoolCode,schoolType){
+    super(schoolLocation,schoolCode,schoolType);
     this.cache = {};
-
-    this.schoolLocation = schoolLocation;
-    this.schoolCode = schoolCode;
-    this.schoolType = schoolType;
   }
 
-  get SchoolCode(){
-    return this.schoolCode;
-  }
-
-  get SchoolType(){
-    return this.schoolType;
-  }
-
-  async getDailyMenu(date,recache){
+  /**
+   * @async getDailyMenu - get daily menu and convert to object
+   *
+   * @param  {Date} = new Date()    date      date to parse
+   * @param  {Boolean}              recache   recache data if true
+   * @return {Object}                         structured menu object
+   */
+  async getDailyMenu(date = new Date(),recache){
     let menus = await this.getMonthlyMenu(date,recache);
-    return menus[date.getDate()];
+    return menus[date.getDate()] || {};
   }
 
-  async getMonthlyMenu(date,recache){
+  /**
+   * @async getMonthlyMenu - get monthly menu and convert to object
+   *
+   * @param  {Date} = new Date()    date      date to parse
+   * @param  {Boolean}              recache   recache data if true
+   * @return {Object}                         structured menu object
+   */
+  async getMonthlyMenu(date = new Date(),recache){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정
     let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
     if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)
-      schoolDB[month] = await parseMenuData(date,this.schoolLocation,this.schoolCode,this.schoolType);
+      schoolDB[month] = await parseMenuData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType);
 
     return schoolDB[month].info;
   }
 
+
+  /**
+   * @async getAllergyInfo - get allergy info
+   *
+   * @param  {Date} = new Date()    date      date to parse
+   * @param  {Boolean}              recache   recache data if true
+   * @return {String}                         allergry info text
+   */
   async getAllergyInfo(date,recache){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정
     let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
@@ -57,7 +82,7 @@ class SchoolMenuParser {
   }
 }
 
-export default (schoolLocation,schoolCode,schoolType) => new SchoolMenuParser(schoolLocation,schoolCode,schoolType);
+export default MenuParser;
 
 /*
  *
@@ -65,7 +90,7 @@ export default (schoolLocation,schoolCode,schoolType) => new SchoolMenuParser(sc
  *
  */
 async function getRawDatabase(date,schoolLocation,schoolCode,schoolType){
-  return await request(GLOBAL_URL,'GET',`/${MONTHLY_MENU_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulCrseScCode=${schoolType}&schYm=${date.getFullYear()}${date.getMonth() + 1}`);
+  return await httpRequest.get(GLOBAL_URL,`/${MONTHLY_MENU_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulCrseScCode=${schoolType}&schYm=${date.getFullYear()}${date.getMonth() + 1}`);
 }
 
 //html 데이터 변경시 수정 필요
