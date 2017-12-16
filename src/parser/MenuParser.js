@@ -37,11 +37,11 @@ class MenuParser extends SchoolParser {
   /**
    * @async getDailyMenu - get daily menu and convert to object
    *
-   * @param  {Date} = new Date()    date      date to parse
-   * @param  {Boolean}              recache   recache data if true
-   * @return {Object}                         structured menu object
+   * @param  {Date}     date      date to parse
+   * @param  {Boolean}  recache   recache data if true
+   * @return {Object}   structured menu object
    */
-  async getDailyMenu(date = new Date(),recache){
+  async getDailyMenu(date,recache){
     let menus = await this.getMonthlyMenu(date,recache);
     return menus[date.getDate()] || {};
   }
@@ -49,11 +49,11 @@ class MenuParser extends SchoolParser {
   /**
    * @async getMonthlyMenu - get monthly menu and convert to object
    *
-   * @param  {Date} = new Date()    date      date to parse
-   * @param  {Boolean}              recache   recache data if true
-   * @return {Object}                         structured menu object
+   * @param  {Date}      date      date to parse
+   * @param  {Boolean}   recache   recache data if true
+   * @return {Object}    structured menu object
    */
-  async getMonthlyMenu(date = new Date(),recache){
+  async getMonthlyMenu(date,recache){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정
     let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
@@ -67,9 +67,9 @@ class MenuParser extends SchoolParser {
   /**
    * @async getAllergyInfo - get allergy info
    *
-   * @param  {Date} = new Date()    date      date to parse
-   * @param  {Boolean}              recache   recache data if true
-   * @return {String}                         allergry info text
+   * @param  {Date}     date      date to parse
+   * @param  {Boolean}  recache   recache data if true
+   * @return {String}   allergry info text
    */
   async getAllergyInfo(date,recache){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정

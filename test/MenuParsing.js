@@ -12,6 +12,8 @@ describe('Menu Parsing Test', () => {
     menu.getMonthlyMenu(new Date()).then((object) => {
       if (typeof(object) !== 'object')
         throw new Error('return value type is not Object');
+
+      console.log('received data',object);
       done();
     });
   });
@@ -20,6 +22,8 @@ describe('Menu Parsing Test', () => {
     menu.getDailyMenu(new Date()).then((object) => {
       if (typeof(object) !== 'object')
         throw new Error('return value type is not Object');
+
+      console.log('received data',object);
       done();
     });
   });
@@ -28,6 +32,8 @@ describe('Menu Parsing Test', () => {
     menu.getAllergyInfo(new Date()).then((allergryInfo) => {
       if (typeof(allergryInfo) !== 'string')
         throw new Error('return value type is not String');
+
+      console.log('received data',allergryInfo);
       done();
     });
   });

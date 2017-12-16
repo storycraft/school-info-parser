@@ -41,9 +41,9 @@ class ScheduleParser extends SchoolParser {
   /**
    * @async getMonthlySchedule - get monthly schedule and convert to object
    *
-   * @param  {Date} = new Date()    date      date to parse
-   * @param  {Boolean}              recache   recache data if true
-   * @return {Object}                         structured schedule object
+   * @param  {Date}     date      date to parse
+   * @param  {Boolean}  recache   recache data if true
+   * @return {Object}   structured schedule object
    */
   async getMonthlySchedule(date,recache){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정

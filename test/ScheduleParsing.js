@@ -12,6 +12,8 @@ describe('Schedule Parsing Test', () => {
     schedule.getMonthlySchedule(new Date()).then((object) => {
       if (typeof(object) !== 'object')
         throw new Error('return value type is not Object');
+
+      console.log('received data',object);
       done();
     });
   });
