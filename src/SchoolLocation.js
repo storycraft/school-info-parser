@@ -1,3 +1,9 @@
+/**
+ * @module src/SchoolLocation.js
+ * @file school location list
+ * @author storycraft <storycraft@storyboard.ml>
+ */
+
 const LOCATIONS = {
   //광역시
   '서울특별시': 'B10',

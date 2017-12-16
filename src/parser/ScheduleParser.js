@@ -1,7 +1,11 @@
-/*
-  주의 : 이 문서를 보고 생기는 암은 책임지지 않습니다.
-*/
-import request from './http_request.js';
+/**
+ * @module src/parser/ScheduleParser.js
+ * @file schedule parser
+ * @author storycraft <storycraft@storyboard.ml>
+ */
+
+import httpRequest from '../request/HttpRequest.js';
+import SchoolParser from './SchoolParser.js';
 import cheerio from 'cheerio';
 
 const GLOBAL_URL = 'stu.sen.go.kr';/* 서울특별시 나이스*/
@@ -17,35 +21,42 @@ const END_MONTH = 2;
 const SUMMER_VACTION = '여름방학';
 const WINTER_VACTION = '겨울방학';
 
-class SchoolScheduleParser {
+class ScheduleParser extends SchoolParser {
+
+  /**
+   * @constructor create a ScheduleParser
+   *
+   * @param  {String} schoolLocation schoolLocation Code
+   * @param  {String} schoolCode     schoolCode
+   * @param  {String} schoolType     schoolLocation Code
+   *
+   * @see {@link /src/SchoolParser.js} for more information
+   */
   constructor(schoolLocation,schoolCode,schoolType){
+    super(schoolLocation,schoolCode,schoolType);
     this.cache = {};
-
-    this.schoolLocation = schoolLocation;
-    this.schoolCode = schoolCode;
-    this.schoolType = schoolType;
   }
 
-  get SchoolCode(){
-    return this.schoolCode;
-  }
 
-  get SchoolType(){
-    return this.schoolType;
-  }
-
+  /**
+   * @async getMonthlySchedule - get monthly schedule and convert to object
+   *
+   * @param  {Date}     date      date to parse
+   * @param  {Boolean}  recache   recache data if true
+   * @return {Object}   structured schedule object
+   */
   async getMonthlySchedule(date,recache){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정
     let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
     if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)
-      schoolDB[month] = await parseScheduleData(date,this.schoolLocation,this.schoolCode,this.schoolType);
+      schoolDB[month] = await parseScheduleData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType);
 
     return schoolDB[month].schedules;
   }
 }
 
-export default (schoolLocation,schoolCode,schoolType) => new SchoolScheduleParser(schoolLocation,schoolCode,schoolType);
+export default ScheduleParser;
 
 /*
  *
@@ -54,7 +65,7 @@ export default (schoolLocation,schoolCode,schoolType) => new SchoolScheduleParse
  */
 
 async function getRawDatabase(date,schoolLocation,schoolCode,schoolType){
-  return await request(GLOBAL_URL,'GET',`/${SCHEDULE_MONTH_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulKndScCode=${KNDCODE}&schulCrseScCode=${schoolType}&ay=${date.getFullYear()}&mm=${date.getMonth() + 1}`);
+  return await httpRequest.get(GLOBAL_URL,`/${SCHEDULE_MONTH_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulKndScCode=${KNDCODE}&schulCrseScCode=${schoolType}&ay=${date.getFullYear()}&mm=${date.getMonth() + 1}`);
 }
 
 //html 데이터 변경시 수정 필요
