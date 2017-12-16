@@ -86,14 +86,14 @@ schedules list
 `date` can be any number  
 it has schedule string array  
 
-###MonthlyMenu
+### MonthlyMenu
 #### info
 ##### [date]
 **nullable**  
 `date` can be any number  
 check DailyMenu Object for more information  
 
-###DailyMenu
+### DailyMenu
 #### day
 **nullable**  
 date number
