@@ -3,7 +3,7 @@
 import http from 'http';
 import assert from 'assert';
 
-import * as SchoolInfoParser from '../src/SchoolInfoParser.js';
+import * as SchoolInfoParser from '../src/index.js';
 
 describe('Menu Parsing Test', () => {
   var menu = new SchoolInfoParser.MenuParser(SchoolInfoParser.SchoolLocation['충청남도'],SCHOOL_CODE,SchoolInfoParser.SchoolType['MIDDLE']);

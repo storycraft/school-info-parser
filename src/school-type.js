@@ -1,5 +1,5 @@
 /**
- * @module src/SchoolType.js
+ * @module src/school-type.js
  * @file school type list
  * @author storycraft <storycraft@storyboard.ml>
  */

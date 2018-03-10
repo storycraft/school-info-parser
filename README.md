@@ -8,7 +8,6 @@
 
 # API 문서
 
-**기존 코드는 deprecated 되었습니다. api.md 문서를 참고해서 고쳐 주세요.**
 [API 문서](api.md) 참고  
 
 # 사용 예

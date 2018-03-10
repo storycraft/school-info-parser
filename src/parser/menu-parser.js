@@ -1,11 +1,11 @@
 /**
- * @module src/parser/MenuParser.js
+ * @module src/parser/menu-parser.js
  * @file menu parser
  * @author storycraft <storycraft@storyboard.ml>
  */
 
-import httpRequest from '../request/HttpRequest.js';
-import SchoolParser from './SchoolParser.js';
+import httpRequest from '../request/http-request.js';
+import SchoolParser from './school-parser.js';
 import cheerio from 'cheerio';
 
 const GLOBAL_URL = 'stu.sen.go.kr';/* 서울특별시 나이스 */

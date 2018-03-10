@@ -1,5 +1,5 @@
 /**
- * @module src/parser/SchoolParser.js
+ * @module src/parser/school-parser.js
  * @file virtual school parser
  * @author storycraft <storycraft@storyboard.ml>
  */

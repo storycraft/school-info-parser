@@ -1,5 +1,5 @@
 /**
- * @module src/request/HttpRequest.js
+ * @module src/request/http-request.js
  * @file http request helper module
  * @author storycraft <storycraft@storyboard.ml>
  */

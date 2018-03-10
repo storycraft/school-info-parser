@@ -1,5 +1,5 @@
 /**
- * @module src/SchoolLocation.js
+ * @module src/school-location.js
  * @file school location list
  * @author storycraft <storycraft@storyboard.ml>
  */

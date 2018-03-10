@@ -1,11 +1,10 @@
 {
   "name": "school-info-parser",
-  "version": "2.0.0",
-  "description": "간단한 nodejs 기반 학교 급식 & 학사 일정 파서기",
-  "main": "SchoolInfoParser.js",
+  "version": "2.0.1",
+  "description": "간단한 nodejs 기반 학교 급식 & 학사 일정 파서",
+  "main": "dist/index.js",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
-    "start": "babel-node src/SchoolInfoParser.js",
     "build": "babel src -d dist"
   },
   "repository": {
