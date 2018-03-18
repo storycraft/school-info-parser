@@ -4,7 +4,7 @@
  * @author storycraft <storycraft@storyboard.ml>
  */
 
- class SchoolParser {
+export default class SchoolParser {
    /**
     * @constructor create a SchoolParser
     *
@@ -52,4 +52,16 @@
    }
  }
 
- export default SchoolParser;
+export class SchoolDataDeserializer {
+  constructor(schoolParser){
+    this.schoolParser = schoolParser;
+  }
+
+  get SchoolParser(){
+    return this.schoolParser;
+  }
+
+  deserialize(){
+    
+  }
+}

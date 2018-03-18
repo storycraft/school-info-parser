@@ -5,7 +5,7 @@
  */
 
 import httpRequest from '../request/http-request.js';
-import SchoolParser from './school-parser.js';
+import SchoolParser, { SchoolDataDeserializer } from './school-parser.js';
 import cheerio from 'cheerio';
 
 const GLOBAL_URL = 'stu.sen.go.kr';/* 서울특별시 나이스*/
@@ -13,15 +13,13 @@ const SCHEDULE_MONTH_URL = 'sts_sci_sf01_001.do';
 
 const KNDCODE = '03';//?????
 
-const CACHE_INTERVAL = 86400000;//하루마다 월 일정 재 캐싱
-
 const START_MONTH = 3;
 const END_MONTH = 2;
 
 const SUMMER_VACTION = '여름방학';
 const WINTER_VACTION = '겨울방학';
 
-class ScheduleParser extends SchoolParser {
+export default class ScheduleParser extends SchoolParser {
 
   /**
    * @constructor create a ScheduleParser
@@ -42,21 +40,14 @@ class ScheduleParser extends SchoolParser {
    * @async getMonthlySchedule - get monthly schedule and convert to object
    *
    * @param  {Date}     date      date to parse
-   * @param  {Boolean}  recache   recache data if true
    * @return {Object}   structured schedule object
    */
-  async getMonthlySchedule(date,recache){
+  async getMonthlySchedule(date){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정
-    let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
-    if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)
-      schoolDB[month] = await parseScheduleData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType);
-
-    return schoolDB[month].schedules;
+    return await parseScheduleData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType).schedules;
   }
 }
-
-export default ScheduleParser;
 
 /*
  *
@@ -101,4 +92,11 @@ function parseTable(scheduleObject,tableData){
     }
   }
   return scheduleList;
+}
+
+
+class ScheduleDeserializer extends SchoolDataDeserializer {
+  constructor(scheduleParser){
+    super(scheduleParser);
+  }
 }

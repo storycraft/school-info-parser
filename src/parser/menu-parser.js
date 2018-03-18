@@ -16,9 +16,7 @@ const BREAKFAST = 'breakfast';
 const LUNCH = 'lunch';
 const DINNER = 'dinner';
 
-const CACHE_INTERVAL = 86400000;//하루마다 월 메뉴 재 캐싱
-
-class MenuParser extends SchoolParser {
+export default class MenuParser extends SchoolParser {
 
   /**
    * @constructor create a MenuParser
@@ -31,17 +29,15 @@ class MenuParser extends SchoolParser {
    */
   constructor(schoolLocation,schoolCode,schoolType){
     super(schoolLocation,schoolCode,schoolType);
-    this.cache = {};
   }
 
   /**
    * @async getDailyMenu - get daily menu and convert to object
    *
    * @param  {Date}     date      date to parse
-   * @param  {Boolean}  recache   recache data if true
    * @return {Object}   structured menu object
    */
-  async getDailyMenu(date,recache){
+  async getDailyMenu(date){
     let menus = await this.getMonthlyMenu(date,recache);
     return menus[date.getDate()] || {};
   }
@@ -50,39 +46,14 @@ class MenuParser extends SchoolParser {
    * @async getMonthlyMenu - get monthly menu and convert to object
    *
    * @param  {Date}      date      date to parse
-   * @param  {Boolean}   recache   recache data if true
    * @return {Object}    structured menu object
    */
-  async getMonthlyMenu(date,recache){
+  async getMonthlyMenu(date){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정
-    let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
 
-    if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)
-      schoolDB[month] = await parseMenuData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType);
-
-    return schoolDB[month].info;
-  }
-
-
-  /**
-   * @async getAllergyInfo - get allergy info
-   *
-   * @param  {Date}     date      date to parse
-   * @param  {Boolean}  recache   recache data if true
-   * @return {String}   allergry info text
-   */
-  async getAllergyInfo(date,recache){
-    let month = date.getMonth() + 1;//현실상 세는 달로 수정
-    let schoolDB = this.cache[date.getFullYear()] || (this.cache[date.getFullYear()] = {});
-
-    if (recache || !schoolDB[month] || Date.now() - schoolDB[month].lastCache > CACHE_INTERVAL)
-      await this.getMonthlyMenu(date,recache);//재캐싱
-
-    return schoolDB[month].allergyInfo;
+    return await parseMenuData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType) || {};
   }
 }
-
-export default MenuParser;
 
 /*
  *
@@ -105,6 +76,7 @@ async function parseMenuData(date,schoolLocation,schoolCode,schoolType){
   let $ = cheerio.load(raw);
   let content = $('div .sub_con').eq(0);//맨 처음 div
   let lunchTable = content.find('td');
+
   var child = lunchTable.children();
   for (var i = 0;i < child.length;i++){
     var divs = child[i].children;
