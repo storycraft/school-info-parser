@@ -1,6 +1,6 @@
 {
   "name": "school-info-parser",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "간단한 nodejs 기반 학교 급식 & 학사 일정 파서",
   "main": "dist/index.js",
   "scripts": {

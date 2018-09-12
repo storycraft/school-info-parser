@@ -83,14 +83,14 @@ if recache is true parser will override cached data
 schedules list  
 ##### [date]
 **nullable**  
-`date` can be any number  
+`date` can be any date number  
 it has schedule string array  
 
 ### MonthlyMenu
 #### info
 ##### [date]
 **nullable**  
-`date` can be any number  
+`date` can be any date number  
 check DailyMenu Object for more information  
 
 ### DailyMenu

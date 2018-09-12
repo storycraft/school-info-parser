@@ -45,7 +45,7 @@ export default class ScheduleParser extends SchoolParser {
   async getMonthlySchedule(date){
     let month = date.getMonth() + 1;//현실상 세는 달로 수정
 
-    return await parseScheduleData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType).schedules;
+    return await parseScheduleData(date,super.SchoolLocation,super.SchoolCode,super.SchoolType);
   }
 }
 
@@ -56,7 +56,7 @@ export default class ScheduleParser extends SchoolParser {
  */
 
 async function getRawDatabase(date,schoolLocation,schoolCode,schoolType){
-  return await httpRequest.get(GLOBAL_URL,`/${SCHEDULE_MONTH_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulKndScCode=${KNDCODE}&schulCrseScCode=${schoolType}&ay=${date.getFullYear()}&mm=${date.getMonth() + 1}`);
+  return await httpRequest.getHttps(GLOBAL_URL,`/${SCHEDULE_MONTH_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulKndScCode=${KNDCODE}&schulCrseScCode=${schoolType}&ay=${date.getFullYear()}&mm=${(date.getMonth() + 1).toString().padStart(2, "0")}`);
 }
 
 //html 데이터 변경시 수정 필요

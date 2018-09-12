@@ -29,11 +29,11 @@ describe('Menu Parsing Test', () => {
   });
 
   it('should return allergry info text', (done) => {
-    menu.getAllergyInfo(new Date()).then((allergryInfo) => {
-      if (typeof(allergryInfo) !== 'string')
-        throw new Error('return value type is not String');
+    menu.getMonthlyMenu(new Date()).then((object) => {
+      if (typeof(object) !== 'object')
+        throw new Error('return value type is not object');
 
-      console.log('received data',allergryInfo);
+      console.log('received data',object.allergyInfo);
       done();
     });
   });

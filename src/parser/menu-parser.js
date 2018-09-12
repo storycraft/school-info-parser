@@ -38,8 +38,8 @@ export default class MenuParser extends SchoolParser {
    * @return {Object}   structured menu object
    */
   async getDailyMenu(date){
-    let menus = await this.getMonthlyMenu(date,recache);
-    return menus[date.getDate()] || {};
+    let menus = await this.getMonthlyMenu(date);
+    return menus.info[date.getDate()] || {};
   }
 
   /**
@@ -61,7 +61,7 @@ export default class MenuParser extends SchoolParser {
  *
  */
 async function getRawDatabase(date,schoolLocation,schoolCode,schoolType){
-  return await httpRequest.get(GLOBAL_URL,`/${MONTHLY_MENU_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulCrseScCode=${schoolType}&schYm=${date.getFullYear()}${date.getMonth() + 1}`);
+  return await httpRequest.getHttps(GLOBAL_URL,`/${MONTHLY_MENU_URL}?domainCode=${schoolLocation}&contEducation=${schoolLocation}&schulCode=${schoolCode}&schulCrseScCode=${schoolType}&schYm=${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, "0")}`);
 }
 
 //html 데이터 변경시 수정 필요

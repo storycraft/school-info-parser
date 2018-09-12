@@ -7,7 +7,7 @@ import HttpRequest from '../src/request/http-request.js';
 
 describe('http request test', () => {
   it('should return google html text', (done) => {
-    HttpRequest.get('google.com').then((raw) => {
+    HttpRequest.getHttps('google.com').then((raw) => {
       if (typeof(raw) !== 'string')
         throw new Error('return value type is not String');
 
