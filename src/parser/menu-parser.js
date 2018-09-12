@@ -23,7 +23,7 @@ export default class MenuParser extends SchoolParser {
    *
    * @param  {String} schoolLocation schoolLocation Code
    * @param  {String} schoolCode     schoolCode
-   * @param  {String} schoolType     schoolLocation Code
+   * @param  {String} schoolType     schoolType Code
    *
    * @see {@link /src/SchoolParser.js} for more information
    */
